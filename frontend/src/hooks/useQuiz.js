@@ -84,43 +84,43 @@ const startQuiz = async (topic, difficulty) => {
     }
   };
 
-  const finishQuiz = () => {
-    clearTimer();
-    setStatus('submitting');
-    const totalTime = Math.round((Date.now() - startTimeRef.current) / 1000);
+const finishQuiz = async () => {
+  clearTimer();
+  setStatus('submitting');
+  const totalTime = Math.round((Date.now() - startTimeRef.current) / 1000);
 
-    const answersArray = questions.map((q, i) => answers[i] || {
-      questionId: q._id, selectedOption: -1, timeTaken: 30
-    });
+  const answersArray = questions.map((q, i) => answers[i] || {
+    questionId: q._id, selectedOption: -1, timeTaken: 30
+  });
 
-    const correctCount = answersArray.filter((a, i) =>
-      a.selectedOption === questions[i]?.correctAnswer).length;
-    const totalQuestions = questions.length;
-    const percentage = Math.round((correctCount / totalQuestions) * 100);
-    const score = questions.reduce((sum, q, i) =>
-      answersArray[i]?.selectedOption === q.correctAnswer ? sum + (q.points || 10) : sum, 0);
-
-    setResult({
-      topic: questions[0]?.topic,
-      difficulty: questions[0]?.difficulty,
-      totalQuestions,
-      correctAnswers: correctCount,
-      wrongAnswers: totalQuestions - correctCount,
-      score,
-      percentage,
-      timeTaken: totalTime,
-      passed: percentage >= 60,
-    });
-    setStatus('done');
-
-    // Try saving to DB in background (optional)
-    API.post('/quiz/submit', {
+  try {
+    // ✅ Fetch real questions from DB first, then submit
+    const { data } = await API.post('/quiz/submit', {
       topic: questions[0]?.topic,
       difficulty: questions[0]?.difficulty,
       answers: answersArray,
       timeTaken: totalTime
-    }).catch(() => {}); // Silently ignore if fails
-  };
+    });
+
+    if (data.success) {
+      setResult({
+        topic: data.result.topic,
+        difficulty: data.result.difficulty,
+        totalQuestions: data.result.totalQuestions,
+        correctAnswers: data.result.correctAnswers,
+        wrongAnswers: data.result.wrongAnswers,
+        score: data.result.score,
+        percentage: data.result.percentage,
+        timeTaken: data.result.timeTaken,
+        passed: data.result.passed,
+      });
+      setStatus('done');
+    }
+  } catch (err) {
+    setError('Failed to submit quiz. Please try again.');
+    setStatus('active');
+  }
+};
 
   const reset = () => {
     clearTimer();
