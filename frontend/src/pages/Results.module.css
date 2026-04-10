@@ -1,0 +1,20 @@
+.page { padding: 40px 20px 60px; background: var(--bg); }
+.inner { max-width: 540px; margin: 0 auto; }
+.ring { width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--accent); background: var(--accent-light); display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 24px; }
+.pct { font-size: 38px; font-weight: 800; color: var(--accent); line-height: 1; }
+.ringSub { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; }
+.grade { font-size: 28px; font-weight: 800; text-align: center; margin-bottom: 8px; color: var(--text); }
+.breakdown { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; box-shadow: var(--shadow); }
+.row { display: flex; align-items: center; justify-content: space-between; padding: 13px 18px; border-bottom: 1px solid var(--border); }
+.row:last-child { border-bottom: none; }
+.val { font-size: 14px; font-weight: 700; }
+.green { color: var(--success); }
+.red { color: var(--danger); }
+.yellow { color: var(--warn); }
+.actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+.lb { margin-top: 8px; }
+.lbRow { display: flex; align-items: center; gap: 12px; padding: 11px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; box-shadow: var(--shadow); }
+.lbRow.you { border-color: var(--accent); background: var(--accent-light); }
+.rank { font-family: 'DM Mono', monospace; font-size: 12px; width: 20px; color: var(--muted); }
+.lbName { flex: 1; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; color: var(--text); }
+.youTag { font-size: 10px; font-family: 'DM Mono', monospace; background: var(--accent); color: #fff; padding: 2px 8px; border-radius: 10px; }

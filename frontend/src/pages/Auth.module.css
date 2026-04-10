@@ -1,0 +1,30 @@
+.page {
+  min-height: calc(100vh - 65px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 20px; background: var(--bg);
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 36px;
+  width: 100%; max-width: 420px;
+  box-shadow: var(--shadow-md);
+}
+.logo { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 24px; text-align: center; color: var(--text); }
+.logo span { color: var(--accent); }
+.logo em { color: var(--accent2); font-style: normal; }
+.title { font-size: 24px; font-weight: 800; text-align: center; margin-bottom: 6px; color: var(--text); }
+.sub { font-size: 14px; color: var(--muted); text-align: center; margin-bottom: 28px; }
+.form { display: flex; flex-direction: column; gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 13px; font-weight: 600; color: var(--text); }
+.submitBtn { width: 100%; margin-top: 8px; font-size: 15px; padding: 14px; border-radius: 10px; }
+.switchText { text-align: center; font-size: 13px; color: var(--muted); margin-top: 20px; }
+.switchText a { color: var(--accent); font-weight: 700; }
+.switchText a:hover { text-decoration: underline; }
+.demoBox {
+  margin-top: 16px; background: var(--accent-light);
+  border: 1px solid rgba(37,99,235,0.2); border-radius: 8px;
+  padding: 10px 14px; text-align: center;
+}

@@ -1,0 +1,11 @@
+{
+  "name": "quizmern",
+  "version": "1.0.0",
+  "description": "Full-stack MERN Quiz Application",
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "seed": "cd backend && node config/seed.js",
+    "build": "cd frontend && npm run build"
+  }
+}
