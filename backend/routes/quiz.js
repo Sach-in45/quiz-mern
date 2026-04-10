@@ -11,13 +11,11 @@ const { protect } = require('../middleware/auth');
 router.post('/submit', protect, async (req, res) => {
   try {
     const { topic, difficulty, answers, timeTaken } = req.body;
-    // answers = [{ questionId, selectedOption, timeTaken }]
 
     if (!answers || !Array.isArray(answers) || answers.length === 0) {
       return res.status(400).json({ success: false, message: 'Answers are required' });
     }
 
-    // Fetch all questions with correct answers
     const questionIds = answers.map((a) => a.questionId);
     const questions = await Question.find({ _id: { $in: questionIds } });
 
@@ -38,7 +36,6 @@ router.post('/submit', protect, async (req, res) => {
         totalScore += question.points;
       }
 
-      // Update question stats
       await Question.findByIdAndUpdate(answer.questionId, {
         $inc: {
           timesAnswered: 1,
@@ -70,14 +67,12 @@ router.post('/submit', protect, async (req, res) => {
       answers: processedAnswers
     });
 
-    // Update user stats
-    const user = await User.findById(req.user._id);
-    user.totalQuizzes += 1;
-    user.totalScore += percentage;
-    if (percentage > user.bestScore) user.bestScore = percentage;
-    await user.save();
+    // ✅ FIXED: Use findByIdAndUpdate to avoid triggering password pre-save hook
+    await User.findByIdAndUpdate(req.user._id, {
+      $inc: { totalQuizzes: 1, totalScore: percentage },
+      $max: { bestScore: percentage }
+    });
 
-    // Return results with correct answers for review
     const resultsWithAnswers = answers.map((a) => {
       const q = questionMap[a.questionId];
       return {
