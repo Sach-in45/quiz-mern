@@ -29,11 +29,15 @@ export function useQuiz() {
     }, 1000);
   }, []);
 
-  const startQuiz = (topic, difficulty) => {
-    // Get 10 shuffled questions from local bank
-    const qs = getQuestions(topic, difficulty, 10);
-    if (qs.length === 0) {
+const startQuiz = async (topic, difficulty) => {
+  setError(null);
+  setStatus('loading');
+  try {
+    const { data } = await API.get(`/questions?topic=${topic}&difficulty=${difficulty}&limit=10`);
+    const qs = data.questions;
+    if (!qs || qs.length === 0) {
       setError('No questions available for this topic and difficulty.');
+      setStatus('idle');
       return;
     }
     setQuestions(qs);
@@ -41,11 +45,13 @@ export function useQuiz() {
     setAnswers({});
     setLocked(false);
     setResult(null);
-    setError(null);
     setStatus('active');
     startTimeRef.current = Date.now();
-  };
-
+  } catch (err) {
+    setError('Failed to load questions. Please try again.');
+    setStatus('idle');
+  }
+};
   useEffect(() => {
     if (status === 'active' && questions.length > 0) {
       setLocked(false);
