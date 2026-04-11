@@ -13,11 +13,10 @@ router.get('/', protect, async (req, res) => {
     if (topic) filter.topic = topic.toLowerCase();
     if (difficulty) filter.difficulty = difficulty.toLowerCase();
 
-    const questions = await Question.aggregate([
-      { $match: filter },
-      { $sample: { size: parseInt(limit) } },
-      { $project: { correctAnswer: 0, explanation: 0 } } // hide answer from client during quiz
-    ]);
+const questions = await Question.aggregate([
+  { $match: filter },
+  { $sample: { size: parseInt(limit) } }
+]);
 
     res.json({ success: true, count: questions.length, questions });
   } catch (err) {
