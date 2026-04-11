@@ -11,7 +11,8 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://quiz-mern-topaz.vercel.app"
+    "https://quiz-mern-topaz.vercel.app",
+    /\.vercel\.app$/
   ],
   credentials: true
 }));
