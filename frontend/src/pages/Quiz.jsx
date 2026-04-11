@@ -57,14 +57,14 @@ export default function Quiz() {
 
   const isLast = currentIndex === questions.length - 1;
 
-  const getOptClass = (i) => {
-    if (!locked) return styles.opt;
-    const correct = currentQuestion.correctAnswer;
-    const selected = selectedAnswer?.selectedOption;
-    if (i === correct) return `${styles.opt} ${styles.correct}`;
-    if (i === selected && i !== correct) return `${styles.opt} ${styles.wrong}`;
-    return `${styles.opt} ${styles.dimmed}`;
-  };
+const getOptClass = (i) => {
+  if (!locked) return styles.opt;
+  const correct = Number(currentQuestion.correctAnswer);
+  const selected = selectedAnswer ? Number(selectedAnswer.selectedOption) : null;
+  if (i === correct) return `${styles.opt} ${styles.correct}`;
+  if (selected !== null && i === selected && i !== correct) return `${styles.opt} ${styles.wrong}`;
+  return `${styles.opt} ${styles.dimmed}`;
+};
 
   return (
     <div className={styles.page}>
@@ -114,12 +114,12 @@ export default function Quiz() {
         </div>
 
         {/* Explanation after answering */}
-        {locked && currentQuestion.explanation && (
-          <div className={styles.explanation}>
-            <span className={styles.explanationIcon}>💡</span>
-            <span>{currentQuestion.explanation}</span>
-          </div>
-        )}
+    {locked && (
+  <div className={styles.explanation}>
+    <span className={styles.explanationIcon}>💡</span>
+    <span>{currentQuestion.explanation || 'No explanation available.'}</span>
+  </div>
+)}
 
         {/* Time up message */}
         {locked && !selectedAnswer && (
@@ -134,7 +134,7 @@ export default function Quiz() {
             let cls = styles.dot;
             if (answers[i]) {
               if (i < currentIndex) {
-                cls += answers[i].selectedOption === questions[i].correctAnswer
+                cls += Number(answers[i].selectedOption) === Number(questions[i].correctAnswer)
                   ? ` ${styles.dotCorrect}` : ` ${styles.dotWrong}`;
               } else if (i === currentIndex) {
                 cls += ` ${styles.dotCurrent}`;
